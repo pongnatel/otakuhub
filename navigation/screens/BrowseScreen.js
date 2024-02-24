@@ -2,15 +2,10 @@ import { View, Text, StyleSheet, FlatList, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import GenreCard from "../../components/GenreCard";
-
-const GET_GENRE = gql`
-  query {
-    GenreCollection
-  }
-`;
+import { GET_GENRE_LIST } from "../../GraphQL/Queries";
 
 export default function BrowseScreen({ navigation }) {
-  const { data } = useQuery(GET_GENRE);
+  const { data } = useQuery(GET_GENRE_LIST);
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {

@@ -1,15 +1,41 @@
-import * as React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet, FlatList, ScrollView } from "react-native";
+import { useEffect, useState } from "react";
+import { gql, useQuery } from "@apollo/client";
+import GenreCard from "../../components/GenreCard";
+
+const GET_GENRE = gql`
+  query {
+    GenreCollection
+  }
+`;
 
 export default function BrowseScreen({ navigation }) {
+  const { data } = useQuery(GET_GENRE);
+  const [genres, setGenres] = useState([]);
+
+  useEffect(() => {
+    if (data && data.GenreCollection) {
+      setGenres(data.GenreCollection);
+    }
+  }, [data]);
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text
-        onPress={() => alert('This is the "Browse" screen.')}
-        style={{ fontSize: 26, fontWeight: "bold" }}
-      >
-        Browse Screen
-      </Text>
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        {genres.map((genre, index) => (
+          <GenreCard key={index} text={genre} />
+        ))}
+      </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    flexWrap: "wrap",
+    flexDirection: "row",
+    gap: 10,
+  },
+});

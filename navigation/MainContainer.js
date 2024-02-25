@@ -10,6 +10,7 @@ import MangaScreen from "./screens/MangaScreen";
 import FavoriteScreen from "./screens/FavoriteScreen";
 import BrowseScreen from "./screens/BrowseScreen";
 import GenreBrowseScreen from "./stackScreens/GenreBrowseScreen";
+import BrowseByScreen from "./stackScreens/BrowseByScreen";
 
 //Screen names
 const animeTab = "Anime";
@@ -18,6 +19,7 @@ const favoriteTab = "Favorite";
 const browseTab = "Browse";
 const browseStack = "BrowseStack";
 const genreStack = "GenreStack";
+const browseByStack = "BrowseByStack";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -69,7 +71,8 @@ function BrowseStackNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name={browseStack} component={BrowseScreen} />
-      <Stack.Screen name={genreStack} component={GenreBrowseScreen} />
+      <Stack.Screen name={browseByStack} component={BrowseByScreen} />
+      {/* <Stack.Screen name={genreStack} component={GenreBrowseScreen} /> */}
     </Stack.Navigator>
   );
 }

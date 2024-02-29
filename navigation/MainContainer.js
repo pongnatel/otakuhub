@@ -72,7 +72,7 @@ function BrowseStackNavigator() {
     <Stack.Navigator>
       <Stack.Screen name={browseStack} component={BrowseScreen} />
       <Stack.Screen name={browseByStack} component={BrowseByScreen} />
-      {/* <Stack.Screen name={genreStack} component={GenreBrowseScreen} /> */}
+      <Stack.Screen name={genreStack} component={GenreBrowseScreen} />
     </Stack.Navigator>
   );
 }

@@ -1,11 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 
-export default function GenreCard({ text }) {
+export default function GenreCard({ category, text }) {
   const navigation = useNavigation();
   return (
     <Pressable
-      onPress={() => navigation.navigate("GenreStack", { genre: text })}
+      onPress={() =>
+        navigation.navigate("GenreStack", { genre: text, category: category })
+      }
     >
       <View style={styles.card}>
         <Text style={styles.cardName}>{text}</Text>

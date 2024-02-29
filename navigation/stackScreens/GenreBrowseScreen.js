@@ -1,7 +1,24 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import GetMedia from "../../components/GetMedia";
 
 export default function GenreBrowseScreen({ route, navigation }) {
-  const { genre } = route.params;
-  return <Text>Genre Browse Screen: {genre}</Text>;
+  const { category, genre } = route.params;
+  return (
+    <View style={styles.container}>
+      <View style={styles.mediaContainer}>
+        <GetMedia category={category} genre={genre} />
+      </View>
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginHorizontal: 15,
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  mediaContainer: {},
+});

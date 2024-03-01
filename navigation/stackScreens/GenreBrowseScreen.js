@@ -7,7 +7,7 @@ export default function GenreBrowseScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.mediaContainer}>
-        <GetMedia category={category} genre={genre} />
+        <GetMedia category={category} genre={genre} sort={["TRENDING_DESC"]} />
       </View>
     </View>
   );

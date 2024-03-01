@@ -7,9 +7,16 @@ export const GET_GENRE_LIST = gql`
 `;
 
 export const LOAD_MEDIA = gql`
-  query ($type: MediaType, $genre: String) {
-    Page(page: 1, perPage: 20) {
-      media(type: $type, genre: $genre) {
+  query ($type: MediaType, $genre: String, $sort: [MediaSort], $page: Int) {
+    Page(page: $page, perPage: 8) {
+      pageInfo {
+        total
+        perPage
+        currentPage
+        lastPage
+        hasNextPage
+      }
+      media(type: $type, genre: $genre, sort: $sort) {
         id
         title {
           english

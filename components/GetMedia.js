@@ -8,6 +8,7 @@ import { LOAD_MEDIA } from "../GraphQL/Queries";
 function GetMedia({ category, genre, sort }) {
   const type = category.toUpperCase();
   const [mediaList, setMediaList] = useState([]);
+  // Keep track the ids of rendered items
   const [renderedItems, setRenderedItems] = useState(new Set());
   const [pageInfo, setPageInfo] = useState({});
   const { data, loading, fetchMore } = useQuery(LOAD_MEDIA, {
@@ -16,9 +17,19 @@ function GetMedia({ category, genre, sort }) {
 
   useEffect(() => {
     if (!loading && data) {
+      //update the set of id of rendered items
+      const updateRenderedItem = new Set(
+        data.Page.media.map((mediaItem) => mediaItem.id)
+      );
+      setRenderedItems(updateRenderedItem);
+
+      //update medialist
       setMediaList(data.Page.media);
       setPageInfo(data.Page.pageInfo);
-      console.log(pageInfo.currentPage + " " + pageInfo.hasNextPage);
+
+      // for debugging
+      // print the current page and size of medialist
+      console.log(pageInfo.currentPage + " " + renderedItems.size);
     }
   }, [data, loading]);
 
@@ -33,12 +44,25 @@ function GetMedia({ category, genre, sort }) {
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
-          return {
-            Page: {
-              ...fetchMoreResult.Page,
-              media: [...prev.Page.media, ...fetchMoreResult.Page.media],
-            },
-          };
+          else {
+            const updateMedia = fetchMoreResult.Page.media.filter(
+              (mediaItem) => {
+                // Check if the media item id is not in the renderedItems set
+                if (!renderedItems.has(mediaItem.id)) {
+                  return true; // Keep this media item in the filtered array
+                }
+                return false; // Exclude this media item from the filtered array
+              }
+            );
+
+            // Merge the new media to the existing media list
+            return {
+              Page: {
+                ...fetchMoreResult.Page,
+                media: [...prev.Page.media, ...updateMedia],
+              },
+            };
+          }
         },
       });
     }
@@ -50,11 +74,6 @@ function GetMedia({ category, genre, sort }) {
 
   return (
     <View>
-      {/* <TextInput value={searchString} onChangeText={setSearchString} />
-      <Button
-        title="Search"
-        onPress={() => refetch({ search: searchString })}
-      ></Button> */}
       <FlatList
         data={mediaList}
         renderItem={({ item }) => (

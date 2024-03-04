@@ -1,6 +1,7 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 // Screens
@@ -8,32 +9,38 @@ import AnimeScreen from "./screens/AnimeScreen";
 import MangaScreen from "./screens/MangaScreen";
 import FavoriteScreen from "./screens/FavoriteScreen";
 import BrowseScreen from "./screens/BrowseScreen";
+import GenreBrowseScreen from "./stackScreens/GenreBrowseScreen";
+import BrowseByScreen from "./stackScreens/BrowseByScreen";
 
 //Screen names
-const animeName = "Anime";
-const mangaName = "Manga";
-const favoriteName = "Favorite";
-const browseName = "Browse";
+const animeTab = "Anime";
+const mangaTab = "Manga";
+const favoriteTab = "Favorite";
+const browseTab = "Browse";
+const browseStack = "BrowseStack";
+const genreStack = "GenreStack";
+const browseByStack = "BrowseByStack";
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 function MainContainer() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName={animeName}
+        initialRouteName={animeTab}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             let rn = route.name;
 
-            if (rn === animeName) {
+            if (rn === animeTab) {
               iconName = focused ? "film" : "film-outline";
-            } else if (rn === mangaName) {
+            } else if (rn === mangaTab) {
               iconName = focused ? "book" : "book-outline";
-            } else if (rn === favoriteName) {
+            } else if (rn === favoriteTab) {
               iconName = focused ? "bookmark" : "bookmark-outline";
-            } else if (rn === browseName) {
+            } else if (rn === browseTab) {
               iconName = focused ? "search" : "search-outline";
             }
 
@@ -47,12 +54,26 @@ function MainContainer() {
           tabBarLabelStyle: { paddingBottom: 10, fontSize: 12 },
         })}
       >
-        <Tab.Screen name={animeName} component={AnimeScreen} />
-        <Tab.Screen name={mangaName} component={MangaScreen} />
-        <Tab.Screen name={favoriteName} component={FavoriteScreen} />
-        <Tab.Screen name={browseName} component={BrowseScreen} />
+        <Tab.Screen name={animeTab} component={AnimeScreen} />
+        <Tab.Screen name={mangaTab} component={MangaScreen} />
+        <Tab.Screen name={favoriteTab} component={FavoriteScreen} />
+        <Tab.Screen
+          name={browseTab}
+          component={BrowseStackNavigator}
+          options={{ headerShown: false }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
+  );
+}
+
+function BrowseStackNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name={browseStack} component={BrowseScreen} />
+      <Stack.Screen name={browseByStack} component={BrowseByScreen} />
+      <Stack.Screen name={genreStack} component={GenreBrowseScreen} />
+    </Stack.Navigator>
   );
 }
 

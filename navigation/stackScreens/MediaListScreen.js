@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import GetMedia from "../../components/GetMedia";
 
-export default function GenreBrowseScreen({ route, navigation }) {
+export default function MediaListScreen({ route, navigation }) {
   const { category, genre } = route.params;
   return (
     <View style={styles.container}>

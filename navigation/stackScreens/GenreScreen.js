@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import GenreCard from "../../components/GenreCard";
 import { GET_GENRE_LIST } from "../../GraphQL/Queries";
 
-export default function BrowseByScreen({ route, navigation }) {
+export default function GenreScreen({ route, navigation }) {
   const { category } = route.params;
   const [genres, setGenres] = useState([]);
 

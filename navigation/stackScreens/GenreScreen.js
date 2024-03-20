@@ -22,9 +22,11 @@ export default function GenreScreen({ route, navigation }) {
       <Text style={styles.title}> Genre </Text>
 
       <View style={styles.genreContainer}>
-        {genres.map((genre, index) => (
-          <GenreCard key={index} text={genre} category={category} />
-        ))}
+        {genres.map((genre, index) => {
+          if (genre != "Hentai" && genre != "Ecchi") {
+            return <GenreCard key={index} text={genre} category={category} />;
+          }
+        })}
       </View>
     </ScrollView>
   );

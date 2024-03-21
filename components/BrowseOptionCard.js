@@ -6,7 +6,7 @@ export default function BrowseOptionCard({ text }) {
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("BrowseByStack", {
+        navigation.navigate("GenreScreen", {
           category: text,
         });
       }}

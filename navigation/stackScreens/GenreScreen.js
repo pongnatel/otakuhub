@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import GenreCard from "../../components/GenreCard";
 import { GET_GENRE_LIST } from "../../GraphQL/Queries";
 
-export default function BrowseByScreen({ route, navigation }) {
+export default function GenreScreen({ route, navigation }) {
   const { category } = route.params;
   const [genres, setGenres] = useState([]);
 
@@ -22,9 +22,11 @@ export default function BrowseByScreen({ route, navigation }) {
       <Text style={styles.title}> Genre </Text>
 
       <View style={styles.genreContainer}>
-        {genres.map((genre, index) => (
-          <GenreCard key={index} text={genre} category={category} />
-        ))}
+        {genres.map((genre, index) => {
+          if (genre != "Hentai" && genre != "Ecchi") {
+            return <GenreCard key={index} text={genre} category={category} />;
+          }
+        })}
       </View>
     </ScrollView>
   );

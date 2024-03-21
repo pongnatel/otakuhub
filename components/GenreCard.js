@@ -6,7 +6,10 @@ export default function GenreCard({ category, text }) {
   return (
     <Pressable
       onPress={() =>
-        navigation.navigate("GenreStack", { genre: text, category: category })
+        navigation.navigate("MediaListScreen", {
+          genre: text,
+          category: category,
+        })
       }
     >
       <View style={styles.card}>

@@ -79,6 +79,7 @@ function GetMedia({ category, genre, sort }) {
         renderItem={({ item }) => (
           <AnimeCard
             key={item.id}
+            animeId={item.id}
             title={item.title}
             image={item.coverImage.large}
             format={item.format}

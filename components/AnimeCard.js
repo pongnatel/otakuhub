@@ -1,8 +1,13 @@
-import { View, StyleSheet, Platform, Image, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { View, StyleSheet, Pressable, Image, Text } from "react-native";
 
-export default function AnimeCard({ title, image, format, type }) {
+export default function AnimeCard({ animeId, title, image, format, type }) {
+  const navigation = useNavigation();
   return (
-    <View style={styles.card}>
+    <Pressable
+      onPress={() => navigation.navigate("MediaScreen", { animeId: animeId })}
+      style={styles.card}
+    >
       <Image
         source={{ uri: image }}
         accessibilityLabel={"${title} anime"}
@@ -20,7 +25,7 @@ export default function AnimeCard({ title, image, format, type }) {
         <Text> - </Text>
         <Text>{format}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

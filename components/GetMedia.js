@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 import { Button, FlatList, Text, TextInput, View } from "react-native";
 import AnimeCard from "./AnimeCard";
-import { LOAD_MEDIA } from "../GraphQL/Queries";
+import { LOAD_MEDIA_LIST } from "../GraphQL/Queries";
 
 function GetMedia({ category, genre, sort }) {
   const type = category.toUpperCase();
@@ -11,7 +11,7 @@ function GetMedia({ category, genre, sort }) {
   // Keep track the ids of rendered items
   const [renderedItems, setRenderedItems] = useState(new Set());
   const [pageInfo, setPageInfo] = useState({});
-  const { data, loading, fetchMore } = useQuery(LOAD_MEDIA, {
+  const { data, loading, fetchMore } = useQuery(LOAD_MEDIA_LIST, {
     variables: { type: type, genre: genre, sort: sort },
   });
 

@@ -75,7 +75,15 @@ function BrowseStackNavigator() {
       <Stack.Screen name={browseStack} component={BrowseScreen} />
       <Stack.Screen name={genreScreen} component={GenreScreen} />
       <Stack.Screen name={mediaListScreen} component={MediaListScreen} />
-      <Stack.Screen name={mediaScreen} component={MediaScreen} />
+      <Stack.Screen
+        name={mediaScreen}
+        component={MediaScreen}
+        options={{
+          title: "",
+          headerStyle: { backgroundColor: "#F8F7F4" },
+          headerShadowVisible: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }

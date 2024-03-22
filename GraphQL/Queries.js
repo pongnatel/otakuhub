@@ -39,6 +39,13 @@ export const LOAD_MEIDA_BY_ID = gql`
   query ($id: Int) {
     Media(id: $id) {
       id
+      startDate {
+        year
+        month
+        day
+      }
+      status
+      type
       title {
         romaji
         english

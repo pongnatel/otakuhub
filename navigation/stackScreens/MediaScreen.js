@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   genreContainer: {
+    marginVertical: 5,
     flexWrap: "wrap",
     flexDirection: "row",
     gap: 5,

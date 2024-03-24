@@ -35,7 +35,7 @@ export const LOAD_MEDIA_LIST = gql`
   }
 `;
 
-export const LOAD_MEIDA_BY_ID = gql`
+export const LOAD_MEDIA_BY_ID = gql`
   query ($id: Int) {
     Media(id: $id) {
       id
@@ -72,6 +72,35 @@ export const LOAD_MEIDA_BY_ID = gql`
       }
       genres
       favourites
+    }
+  }
+`;
+
+export const LOAD_TRENDING_ANIME = gql`
+  query ($page: Int, $perPage: Int) {
+    Page(page: $page, perPage: $perPage) {
+      pageInfo {
+        total
+        perPage
+        currentPage
+        lastPage
+        hasNextPage
+      }
+      media(type: ANIME, sort: TRENDING_DESC) {
+        id
+        title {
+          english
+          romaji
+        }
+        coverImage {
+          extraLarge
+          large
+          medium
+          color
+        }
+        format
+        type
+      }
     }
   }
 `;

@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { useQuery } from "@apollo/client";
-import { LOAD_MEIDA_BY_ID } from "../../GraphQL/Queries";
+import { LOAD_MEDIA_BY_ID } from "../../GraphQL/Queries";
 import { useWindowDimensions } from "react-native";
 import RenderHtml from "react-native-render-html";
 import MiniGenreCard from "../../components/MiniGenreCard";
@@ -17,7 +17,7 @@ import MiniGenreCard from "../../components/MiniGenreCard";
 export default function MediaScreen({ route }) {
   const { animeId } = route.params;
   const { width } = useWindowDimensions();
-  const { loading, error, data } = useQuery(LOAD_MEIDA_BY_ID, {
+  const { loading, error, data } = useQuery(LOAD_MEDIA_BY_ID, {
     variables: { id: animeId },
   });
 

@@ -15,6 +15,7 @@ import MediaScreen from "./stackScreens/MediaScreen";
 
 //Screen names
 const animeTab = "Anime";
+const animeStack = "AnimeStack";
 const mangaTab = "Manga";
 const favoriteTab = "Favorite";
 const browseTab = "Browse";
@@ -56,7 +57,11 @@ function MainContainer() {
           tabBarLabelStyle: { paddingBottom: 10, fontSize: 12 },
         })}
       >
-        <Tab.Screen name={animeTab} component={AnimeScreen} />
+        <Tab.Screen
+          name={animeTab}
+          component={AnimeStackNavigator}
+          options={{ headerShown: false }}
+        />
         <Tab.Screen name={mangaTab} component={MangaScreen} />
         <Tab.Screen name={favoriteTab} component={FavoriteScreen} />
         <Tab.Screen
@@ -88,4 +93,20 @@ function BrowseStackNavigator() {
   );
 }
 
+function AnimeStackNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name={animeStack} component={AnimeScreen} />
+      <Stack.Screen
+        name={mediaScreen}
+        component={MediaScreen}
+        options={{
+          title: "",
+          headerStyle: { backgroundColor: "#F8F7F4" },
+          headerShadowVisible: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 export default MainContainer;

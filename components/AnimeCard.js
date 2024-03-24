@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
   card: {
     width: 160,
     borderRadius: 10,
-    margin: 16,
   },
   image: {
     width: "100%",

@@ -1,18 +1,17 @@
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
-import React from "react";
-import { Button, FlatList, Text, TextInput, View } from "react-native";
+import { View, Text, ActivityIndicator, FlatList } from "react-native";
+import { LOAD_TRENDING_ANIME } from "../GraphQL/Queries";
 import AnimeCard from "./AnimeCard";
-import { LOAD_MEDIA_LIST } from "../GraphQL/Queries";
 
-function GetMedia({ category, genre, sort }) {
-  const type = category.toUpperCase();
+const GetTrendingAnime = () => {
   const [mediaList, setMediaList] = useState([]);
   // Keep track the ids of rendered items
   const [renderedItems, setRenderedItems] = useState(new Set());
   const [pageInfo, setPageInfo] = useState({});
-  const { data, loading, fetchMore } = useQuery(LOAD_MEDIA_LIST, {
-    variables: { type: type, genre: genre, sort: sort },
+
+  const { loading, error, data, fetchMore } = useQuery(LOAD_TRENDING_ANIME, {
+    variables: { perPage: 3 },
   });
 
   useEffect(() => {
@@ -33,14 +32,15 @@ function GetMedia({ category, genre, sort }) {
     }
   }, [data, loading]);
 
+  if (loading) return <ActivityIndicator />;
+  if (error) return <Text>Error: {error.message}</Text>;
+
   const fetchMoreData = () => {
     if (!loading && data && pageInfo.hasNextPage) {
       fetchMore({
         variables: {
           page: pageInfo.currentPage + 1, // Fetch next page
-          type: type,
-          genre: genre,
-          sort: sort,
+          perPage: 3,
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
@@ -69,7 +69,7 @@ function GetMedia({ category, genre, sort }) {
   };
 
   const renderFooter = () => {
-    return loading ? <Text>Loading more...</Text> : null;
+    return loading ? <ActivityIndicator /> : null;
   };
 
   return (
@@ -88,13 +88,15 @@ function GetMedia({ category, genre, sort }) {
         )}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={<Text>List Empty</Text>}
-        numColumns={2}
-        ListFooterComponent={renderFooter}
         onEndReached={fetchMoreData}
         onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
       />
     </View>
   );
-}
+};
 
-export default GetMedia;
+export default GetTrendingAnime;

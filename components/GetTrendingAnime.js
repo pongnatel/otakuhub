@@ -6,12 +6,12 @@ import AnimeCard from "./AnimeCard";
 
 const GetTrendingAnime = () => {
   const [mediaList, setMediaList] = useState([]);
+  const [pageInfo, setPageInfo] = useState({});
   // Keep track the ids of rendered items
   const [renderedItems, setRenderedItems] = useState(new Set());
-  const [pageInfo, setPageInfo] = useState({});
 
   const { loading, error, data, fetchMore } = useQuery(LOAD_TRENDING_ANIME, {
-    variables: { perPage: 3 },
+    variables: { page: 1, perPage: 3 },
   });
 
   useEffect(() => {
@@ -32,14 +32,11 @@ const GetTrendingAnime = () => {
     }
   }, [data, loading]);
 
-  if (loading) return <ActivityIndicator />;
-  if (error) return <Text>Error: {error.message}</Text>;
-
   const fetchMoreData = () => {
-    if (!loading && data && pageInfo.hasNextPage) {
+    if (!loading && pageInfo.hasNextPage) {
       fetchMore({
         variables: {
-          page: pageInfo.currentPage + 1, // Fetch next page
+          page: pageInfo.currentPage + 1,
           perPage: 3,
         },
         updateQuery: (prev, { fetchMoreResult }) => {
@@ -54,7 +51,6 @@ const GetTrendingAnime = () => {
                 return false; // Exclude this media item from the filtered array
               }
             );
-
             // Merge the new media to the existing media list
             return {
               Page: {
@@ -72,30 +68,31 @@ const GetTrendingAnime = () => {
     return loading ? <ActivityIndicator /> : null;
   };
 
+  if (loading && !mediaList.length) return <ActivityIndicator />;
+  if (error) return <Text>Error: {error.message}</Text>;
+
   return (
-    <View>
-      <FlatList
-        data={mediaList}
-        renderItem={({ item }) => (
-          <AnimeCard
-            key={item.id}
-            animeId={item.id}
-            title={item.title}
-            image={item.coverImage.large}
-            format={item.format}
-            type={item.type}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text>List Empty</Text>}
-        onEndReached={fetchMoreData}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={renderFooter}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
-      />
-    </View>
+    <FlatList
+      data={mediaList}
+      renderItem={({ item }) => (
+        <AnimeCard
+          key={item.id}
+          animeId={item.id}
+          title={item.title}
+          image={item.coverImage.large}
+          format={item.format}
+          type={item.type}
+        />
+      )}
+      keyExtractor={(item) => item.id.toString()}
+      ListEmptyComponent={<Text>List Empty</Text>}
+      onEndReached={fetchMoreData}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={renderFooter}
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+      ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+    />
   );
 };
 

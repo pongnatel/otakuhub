@@ -2,6 +2,7 @@ import * as React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import axios from "axios";
 import GetTrendingAnime from "../../components/GetTrendingAnime";
+import GetPopularAnime from "../../components/GetPopularAnime";
 
 const baseUrl = "https://anilist.co/search/anime/trending";
 
@@ -14,11 +15,10 @@ export default function AnimeScreen({ navigation }) {
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>TRENDING</Text>
-        <GetTrendingAnime />
+        <GetPopularAnime />
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>TRENDING</Text>
-        <GetTrendingAnime />
       </View>
     </ScrollView>
   );

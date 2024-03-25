@@ -104,3 +104,32 @@ export const LOAD_TRENDING_ANIME = gql`
     }
   }
 `;
+
+export const LOAD_POPULAR_ANIME = gql`
+  query ($page: Int, $perPage: Int) {
+    Page(page: $page, perPage: $perPage) {
+      pageInfo {
+        total
+        perPage
+        currentPage
+        lastPage
+        hasNextPage
+      }
+      media(type: ANIME, sort: POPULARITY_DESC) {
+        id
+        title {
+          english
+          romaji
+        }
+        coverImage {
+          extraLarge
+          large
+          medium
+          color
+        }
+        format
+        type
+      }
+    }
+  }
+`;

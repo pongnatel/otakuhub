@@ -6,30 +6,7 @@ import MainContainer from "./navigation/MainContainer";
 // Initialize Apollo Client
 const client = new ApolloClient({
   uri: "https://graphql.anilist.co",
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          Page: {
-            merge(existing, incoming) {
-              const merged = { ...existing };
-              if (existing && incoming) {
-                merged.pageInfo = incoming.pageInfo;
-                merged.media = [
-                  ...(existing.media || []),
-                  ...(incoming.media || []),
-                ];
-              } else if (incoming) {
-                merged.pageInfo = incoming.pageInfo;
-                merged.media = incoming.media || [];
-              }
-              return merged;
-            },
-          },
-        },
-      },
-    },
-  }),
+  cache: new InMemoryCache(),
 });
 
 export default function App() {

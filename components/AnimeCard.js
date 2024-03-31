@@ -16,7 +16,7 @@ export default function AnimeCard({ animeId, title, image, format, type }) {
       ></Image>
 
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>
+        <Text style={styles.title} numberOfLines={3} ellipsizeMode="tail">
           {title.english ? title.english : title.romaji}
         </Text>
       </View>
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
   card: {
     width: 160,
     borderRadius: 10,
-    margin: 16,
   },
   image: {
     width: "100%",

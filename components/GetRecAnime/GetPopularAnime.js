@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { View, Text, ActivityIndicator, FlatList } from "react-native";
-import { LOAD_POPULAR_ANIME } from "../GraphQL/Queries";
-import AnimeCard from "./AnimeCard";
+import { LOAD_POPULAR_ANIME, LOAD_MEDIA_W_SORT } from "../../GraphQL/Queries";
+import AnimeCard from "../AnimeCard";
 
 const GetPopularAnime = () => {
   const [mediaList, setMediaList] = useState([]);
   const [pageInfo, setPageInfo] = useState({});
 
-  const { loading, error, data, fetchMore } = useQuery(LOAD_POPULAR_ANIME, {
-    variables: { perPage: 3 },
+  // const { loading, error, data, fetchMore } = useQuery(LOAD_POPULAR_ANIME, {
+  //   variables: { perPage: 3 },
+  //   fetchPolicy: "network-only",
+  //   errorPolicy: "all",
+  // });
+
+  const { loading, error, data, fetchMore } = useQuery(LOAD_MEDIA_W_SORT, {
+    variables: { perPage: 3, type: "ANIME", sort: "POPULARITY_DESC" },
+    fetchPolicy: "cache-and-network",
+    errorPolicy: "all",
   });
 
   useEffect(() => {
@@ -19,12 +27,30 @@ const GetPopularAnime = () => {
     }
   }, [data, loading]);
 
+  // const fetchMoreData = () => {
+  //   if (!loading && data && pageInfo.hasNextPage) {
+  //     fetchMore({
+  //       variables: {
+  //         page: pageInfo.currentPage + 1,
+  //         perPage: 3,
+  //       },
+  //       updateQuery: (prev, { fetchMoreResult }) => {
+  //         if (!fetchMoreResult) return prev;
+  //         const updateMedia = fetchMoreResult.Page.media.filter(
+  //           (mediaItem) => !mediaList.some((item) => item.id === mediaItem.id)
+  //         );
+  //         setMediaList([...mediaList, ...updateMedia]);
+  //         setPageInfo(fetchMoreResult.Page.pageInfo);
+  //       },
+  //     });
+  //   }
+  // };
+
   const fetchMoreData = () => {
     if (!loading && data && pageInfo.hasNextPage) {
       fetchMore({
         variables: {
           page: pageInfo.currentPage + 1,
-          perPage: 3,
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
@@ -37,7 +63,6 @@ const GetPopularAnime = () => {
       });
     }
   };
-
   const renderFooter = () => {
     return loading ? <ActivityIndicator /> : null;
   };

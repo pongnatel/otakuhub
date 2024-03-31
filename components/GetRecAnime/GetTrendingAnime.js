@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { View, Text, ActivityIndicator, FlatList } from "react-native";
-import { LOAD_TRENDING_ANIME } from "../GraphQL/Queries";
-import AnimeCard from "./AnimeCard";
+import { LOAD_TRENDING_ANIME } from "../../GraphQL/Queries";
+import AnimeCard from "../AnimeCard";
 
 const GetTrendingAnime = () => {
   const [mediaList, setMediaList] = useState([]);
@@ -12,28 +12,19 @@ const GetTrendingAnime = () => {
 
   const { loading, error, data, fetchMore } = useQuery(LOAD_TRENDING_ANIME, {
     variables: { page: 1, perPage: 3 },
+    fetchPolicy: "cache-and-networks",
+    errorPolicy: "all",
   });
 
   useEffect(() => {
     if (!loading && data) {
-      //update the set of id of rendered items
-      const updateRenderedItem = new Set(
-        data.Page.media.map((mediaItem) => mediaItem.id)
-      );
-      setRenderedItems(updateRenderedItem);
-
-      //update medialist
       setMediaList(data.Page.media);
       setPageInfo(data.Page.pageInfo);
-
-      // for debugging
-      // print the current page and size of medialist
-      console.log(pageInfo.currentPage + " " + renderedItems.size);
     }
   }, [data, loading]);
 
   const fetchMoreData = () => {
-    if (!loading && pageInfo.hasNextPage) {
+    if (!loading && data && pageInfo.hasNextPage) {
       fetchMore({
         variables: {
           page: pageInfo.currentPage + 1,
@@ -41,24 +32,11 @@ const GetTrendingAnime = () => {
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
-          else {
-            const updateMedia = fetchMoreResult.Page.media.filter(
-              (mediaItem) => {
-                // Check if the media item id is not in the renderedItems set
-                if (!renderedItems.has(mediaItem.id)) {
-                  return true; // Keep this media item in the filtered array
-                }
-                return false; // Exclude this media item from the filtered array
-              }
-            );
-            // Merge the new media to the existing media list
-            return {
-              Page: {
-                ...fetchMoreResult.Page,
-                media: [...prev.Page.media, ...updateMedia],
-              },
-            };
-          }
+          const updateMedia = fetchMoreResult.Page.media.filter(
+            (mediaItem) => !mediaList.some((item) => item.id === mediaItem.id)
+          );
+          setMediaList([...mediaList, ...updateMedia]);
+          setPageInfo(fetchMoreResult.Page.pageInfo);
         },
       });
     }

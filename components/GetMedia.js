@@ -11,8 +11,10 @@ function GetMedia({ category, genre, sort }) {
   // Keep track the ids of rendered items
   const [renderedItems, setRenderedItems] = useState(new Set());
   const [pageInfo, setPageInfo] = useState({});
-  const { data, loading, fetchMore } = useQuery(LOAD_MEDIA_LIST, {
+  const { data, loading, fetchMore, error } = useQuery(LOAD_MEDIA_LIST, {
     variables: { type: type, genre: genre, sort: sort },
+    fetchPolicy: "cache-and-network",
+    errorPolicy: "all",
   });
 
   useEffect(() => {
@@ -60,6 +62,16 @@ function GetMedia({ category, genre, sort }) {
             },
           };
         },
+        onError: (error) => {
+          if (error.networkError && error.networkError.statusCode === 500) {
+            // Retry fetchMore after a delay
+            console.log("retry");
+            setTimeout(fetchMoreData, 2000); // Retry after 2 seconds (adjust as needed)
+          } else {
+            console.error("An error occurred while fetching more data:", error);
+            // Handle other types of errors here
+          }
+        },
       });
     }
   };
@@ -67,6 +79,10 @@ function GetMedia({ category, genre, sort }) {
   const renderFooter = () => {
     return loading ? <Text>Loading more...</Text> : null;
   };
+
+  if (error) {
+    return <Text>An error occurred. Please try again later.</Text>;
+  }
 
   return (
     <View>

@@ -133,3 +133,61 @@ export const LOAD_POPULAR_ANIME = gql`
     }
   }
 `;
+
+export const LOAD_FAVORITE_ANIME = gql`
+  query ($page: Int, $perPage: Int) {
+    Page(page: $page, perPage: $perPage) {
+      pageInfo {
+        total
+        perPage
+        currentPage
+        lastPage
+        hasNextPage
+      }
+      media(type: ANIME, sort: FAVOURITES_DESC) {
+        id
+        title {
+          english
+          romaji
+        }
+        coverImage {
+          extraLarge
+          large
+          medium
+          color
+        }
+        format
+        type
+      }
+    }
+  }
+`;
+
+export const LOAD_MEDIA_W_SORT = gql`
+  query ($page: Int, $perPage: Int, $type: MediaType, $sort: [MediaSort]) {
+    Page(page: $page, perPage: $perPage) {
+      pageInfo {
+        total
+        perPage
+        currentPage
+        lastPage
+        hasNextPage
+      }
+      media(type: $type, sort: $sort) {
+        id
+        title {
+          english
+          romaji
+        }
+        coverImage {
+          extraLarge
+          large
+          medium
+          color
+        }
+        format
+        type
+      }
+    }
+  }
+`;

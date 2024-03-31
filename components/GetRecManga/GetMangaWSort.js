@@ -4,13 +4,13 @@ import { View, Text, ActivityIndicator, FlatList } from "react-native";
 import { LOAD_MEDIA_W_SORT } from "../../GraphQL/Queries";
 import AnimeCard from "../AnimeCard";
 
-const GetTrendingAnime = () => {
+const GetMangaWSort = ({ sort }) => {
   const [mediaList, setMediaList] = useState([]);
   const [pageInfo, setPageInfo] = useState({});
 
   const { loading, error, data, fetchMore } = useQuery(LOAD_MEDIA_W_SORT, {
-    variables: { perPage: 3, type: "ANIME", sort: "TRENDING_DESC" },
-    fetchPolicy: "cache-and-network",
+    variables: { page: 1, perPage: 3, type: "MANGA", sort: sort },
+    fetchPolicy: "cache-and-networks",
     errorPolicy: "all",
   });
 
@@ -72,4 +72,4 @@ const GetTrendingAnime = () => {
   );
 };
 
-export default GetTrendingAnime;
+export default GetMangaWSort;

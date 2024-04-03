@@ -14,6 +14,7 @@ import { useWindowDimensions } from "react-native";
 import RenderHtml from "react-native-render-html";
 import MiniGenreCard from "../../components/MiniGenreCard";
 import TabBar from "../../components/TabBar";
+import { useState } from "react";
 
 export default function MediaScreen({ route }) {
   const { animeId } = route.params;
@@ -22,12 +23,16 @@ export default function MediaScreen({ route }) {
     variables: { id: animeId },
   });
 
+  const [activeTab, setActiveTab] = useState("info");
+
   if (loading) return <ActivityIndicator />;
   if (error) return <Text>Error: {error.message}</Text>;
 
   const media = data?.Media;
 
-  console.log("Media:", media);
+  const handleTab = (tabName) => {
+    setActiveTab(tabName);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,8 +71,17 @@ export default function MediaScreen({ route }) {
           })}
         </View>
 
-        <TabBar />
-        <RenderHtml contentWidth={width} source={{ html: media.description }} />
+        <TabBar onPressTab={handleTab} />
+        {activeTab === "info" && (
+          <RenderHtml
+            contentWidth={width}
+            source={{ html: media.description }}
+          />
+        )}
+        {activeTab === "character" && <Text>Character</Text>}
+        {activeTab === "staff" && <Text>staff</Text>}
+        {activeTab === "recommendation" && <Text>recommendation</Text>}
+        {/* <RenderHtml contentWidth={width} source={{ html: media.description }} /> */}
       </ScrollView>
     </SafeAreaView>
   );

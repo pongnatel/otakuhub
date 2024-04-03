@@ -7,22 +7,28 @@ import {
   Button,
 } from "react-native";
 
-export default function TabBar() {
+export default function TabBar({ onPressTab }) {
   return (
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       <View style={styles.container}>
-        <Pressable style={styles.tabItem} onPress={() => alert("Hello")}>
+        <Pressable style={styles.tabItem} onPress={() => onPressTab("info")}>
           <Text style={styles.tabTitle}>Info</Text>
         </Pressable>
-        <View style={styles.tabItem}>
+        <Pressable
+          style={styles.tabItem}
+          onPress={() => onPressTab("character")}
+        >
           <Text style={styles.tabTitle}>Characters</Text>
-        </View>
-        <View style={styles.tabItem}>
+        </Pressable>
+        <Pressable style={styles.tabItem} onPress={() => onPressTab("staff")}>
           <Text style={styles.tabTitle}>Staff</Text>
-        </View>
-        <View style={styles.tabItem}>
+        </Pressable>
+        <Pressable
+          style={styles.tabItem}
+          onPress={() => onPressTab("recommendation")}
+        >
           <Text style={styles.tabTitle}>Recommendation</Text>
-        </View>
+        </Pressable>
       </View>
     </ScrollView>
   );

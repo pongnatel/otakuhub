@@ -13,6 +13,7 @@ import { LOAD_MEDIA_BY_ID } from "../../GraphQL/Queries";
 import { useWindowDimensions } from "react-native";
 import RenderHtml from "react-native-render-html";
 import MiniGenreCard from "../../components/MiniGenreCard";
+import TabBar from "../../components/TabBar";
 
 export default function MediaScreen({ route }) {
   const { animeId } = route.params;
@@ -64,6 +65,8 @@ export default function MediaScreen({ route }) {
             }
           })}
         </View>
+
+        <TabBar />
         <RenderHtml contentWidth={width} source={{ html: media.description }} />
       </ScrollView>
     </SafeAreaView>
